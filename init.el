@@ -3,6 +3,12 @@
 ;; It must be stored in your home directory.
 
 (defun dotspacemacs/layers ()
+  (require 'subr-x)
+  (setq homebrew-plantuml-jar-path
+        (expand-file-name
+         (string-trim
+          (shell-command-to-string "brew list plantuml | grep jar"))))
+
   "Layer configuration:
 This function should only modify configuration layer settings."
   (setq-default
@@ -111,7 +117,8 @@ This function should only modify configuration layer settings."
            helm-follow-mode-persistent t)
 
      html
-     ;; javascript
+     java
+     javascript
      json
 
      ;; Clojure specific configuration in dotspacemacs/user-config
@@ -133,6 +140,15 @@ This function should only modify configuration layer settings."
           osx-right-control-as 'left
           osx-swap-option-and-command nil)
 
+     pandoc
+     (plantuml :variables
+               plantuml-jar-path homebrew-plantuml-jar-path
+               org-plantuml-jar-path homebrew-plantuml-jar-path
+               plantuml-default-exec-mode 'jar
+               plantuml-output-type "png")
+     python
+     shell-scripts
+
      ;; Configuration: https://github.com/seagle0128/doom-modeline#customize
      (spacemacs-modeline :variables
                          doom-modeline-height 12
@@ -145,6 +161,8 @@ This function should only modify configuration layer settings."
                          doom-modeline-irc nil
                          doom-modeline-env-version t
                          doom-modeline-modal-icon nil)
+
+     sql
 
      ;; Customise the Spacemacs themes
      ;; https://develop.spacemacs.org/layers/+themes/theming/README.html
@@ -212,6 +230,11 @@ This function should only modify configuration layer settings."
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
+
+     (wakatime :variables
+               wakatime-api-key "c1c2b86b-993f-43a9-b7ae-7a742cc425d7"
+               wakatime-python-bin "/usr/local/bin/python3"
+               wakatime-cli-path "/usr/local/bin/wakatime")
 
      yaml
 
@@ -491,7 +514,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
    ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
@@ -773,7 +796,7 @@ before packages are loaded."
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Safe structural editing
   ;; for all major modes
-  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+  ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
   ;; for clojure layer only (comment out line above)
   ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
   ;;
