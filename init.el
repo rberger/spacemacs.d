@@ -123,6 +123,16 @@ This function should only modify configuration layer settings."
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
+     ;; OSX Layer
+     (osx :variables osx-command-as       'hyper
+          osx-option-as        'meta
+          osx-control-as       'control
+          osx-function-as      nil
+          osx-right-command-as 'left
+          osx-right-option-as  'left
+          osx-right-control-as 'left
+          osx-swap-option-and-command nil)
+
      ;; Configuration: https://github.com/seagle0128/doom-modeline#customize
      (spacemacs-modeline :variables
                          doom-modeline-height 12
@@ -310,7 +320,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -378,7 +388,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Ubuntu Mono"
-                               :size 24.0
+                               :size 14.0
                                :weight normal
                                :width normal)
 
