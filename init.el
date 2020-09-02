@@ -3,12 +3,6 @@
 ;; It must be stored in your home directory.
 
 (defun dotspacemacs/layers ()
-  (require 'subr-x)
-  (setq homebrew-plantuml-jar-path
-        (expand-file-name
-         (string-trim
-          (shell-command-to-string "brew list plantuml | grep jar"))))
-
   "Layer configuration:
 This function should only modify configuration layer settings."
   (setq-default
@@ -147,6 +141,7 @@ This function should only modify configuration layer settings."
                plantuml-default-exec-mode 'jar
                plantuml-output-type "png")
      python
+     react
      shell-scripts
 
      ;; Configuration: https://github.com/seagle0128/doom-modeline#customize
@@ -163,6 +158,8 @@ This function should only modify configuration layer settings."
                          doom-modeline-modal-icon nil)
 
      sql
+
+     tern
 
      ;; Customise the Spacemacs themes
      ;; https://develop.spacemacs.org/layers/+themes/theming/README.html
@@ -248,7 +245,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(graphql-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -565,7 +562,8 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers '(:visual t
+   dotspacemacs-line-numbers '(:relative nil
+                               :visual t
                                :disabled-for-modes dired-mode
                                                    doc-view-mode
                                                    pdf-view-mode
@@ -578,7 +576,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -681,6 +679,18 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+  (require 'subr-x)
+  (setq homebrew-plantuml-jar-path
+        (expand-file-name
+         (string-trim
+          (shell-command-to-string "brew list plantuml | grep jar"))))
+
+  ;; Get the  custom code out of init.elements
+  ;; https://github.com/syl20bnr/spacemacs/issues/1639#issuecomment-627533037
+  (customize-set-variable
+   'custom-file (file-truename (concat dotspacemacs-directory "custom.el")) "Separate custom file")
+  (load custom-file)
 
   ;; custom theme modification
   ;; - overriding default height of modeline
@@ -1577,3 +1587,9 @@ before packages are loaded."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+)
