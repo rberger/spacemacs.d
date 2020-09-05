@@ -408,7 +408,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Ubuntu Mono"
-                               :size 14.0
+                               :size 16.0
                                :weight normal
                                :width normal)
 
@@ -722,6 +722,8 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; so that command-h hides emacs as is normal for osx
+  (global-set-key (kbd "H-h") 'ns-do-hide-emacs)
 
   ;; Doom theme settings
   (setq doom-gruvbox-light-variant "hard")
