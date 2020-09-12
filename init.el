@@ -245,7 +245,8 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(graphql-mode)
+   dotspacemacs-additional-packages '(graphql-mode
+                                      (re-jump :location (recipe :fetcher github :repo "oliyh/re-jump.el" :files ("re-jump.el"))))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -400,7 +401,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(doom)
+   dotspacemacs-mode-line-theme '(spacemacs)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -408,7 +409,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Ubuntu Mono"
-                               :size 16.0
+                               :size 18.0
                                :weight normal
                                :width normal)
 
@@ -932,6 +933,10 @@ before packages are loaded."
   ;; Pretty print in Clojure to use the Fast Idiomatic Pretty-Printer. This is approximately 5-10x faster than clojure.core/pprint
   (setq cider-pprint-fn 'fipp)
   ;;
+  ;; Indent on save
+  (add-hook 'clojure-mode-hook
+            (lambda()
+              (add-hook 'before-save-hook '(lambda () (clojure-indent-region (point-min) (point-max))))))
   ;;
   ;; Indentation of function forms
   ;; https://github.com/clojure-emacs/clojure-mode#indentation-of-function-forms
