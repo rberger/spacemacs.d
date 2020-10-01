@@ -732,9 +732,12 @@ before packages are loaded."
 
 
   ;; kriyative/git-code-review config
-  ;; (add-hook 'clojure-mode-hook 'gcr-mode)
-  ;; (add-hook 'emacs-lisp-mode-hook 'gcr-mode)
-  ;; (add-hook 'common-lisp-mode-hook 'gcr-mode)
+  (use-package git-code-review
+    :config
+    (add-hook 'clojure-mode-hook 'gcr-mode)
+    (add-hook 'emacs-lisp-mode-hook 'gcr-mode)
+    (add-hook 'common-lisp-mode-hook 'gcr-mode))
+
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; User key bindings
   ;;
