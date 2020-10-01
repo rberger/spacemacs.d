@@ -246,7 +246,8 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(graphql-mode
-                                      (re-jump :location (recipe :fetcher github :repo "oliyh/re-jump.el" :files ("re-jump.el"))))
+                                      (re-jump :location (recipe :fetcher github :repo "oliyh/re-jump.el" :files ("re-jump.el")))
+                                      (git-code-review :location (recipe :fetcher github :repo kriyative/git-code-review)))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -564,16 +565,16 @@ It should only modify the values of Spacemacs settings."
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
    dotspacemacs-line-numbers '(:relative nil
-                               :visual t
-                               :disabled-for-modes dired-mode
-                                                   doc-view-mode
-                                                   pdf-view-mode
-                               :size-limit-kb 1000)
+                                         :visual nil
+                                         :disabled-for-modes dired-mode
+                                         doc-view-mode
+                                         pdf-view-mode
+                                         :size-limit-kb 1000)
 
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -696,16 +697,16 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; custom theme modification
   ;; - overriding default height of modeline
   (setq-default
-    theming-modifications
-      '((spacemacs-light
-          (mode-line :height 0.92)
-          (mode-line-inactive :height 0.92))
-        (doom-solarized-light
-         (mode-line :height 0.92)
-         (mode-line-inactive :height 0.92))
-        (doom-gruvbox-light
-         (mode-line :height 0.80)
-         (mode-line-inactive :height 0.92))))
+   theming-modifications
+   '((spacemacs-light
+      (mode-line :height 0.92)
+      (mode-line-inactive :height 0.92))
+     (doom-solarized-light
+      (mode-line :height 0.92)
+      (mode-line-inactive :height 0.92))
+     (doom-gruvbox-light
+      (mode-line :height 0.80)
+      (mode-line-inactive :height 0.92))))
 
   )  ;; End of dotspacemacs/user-int
 
@@ -730,6 +731,10 @@ before packages are loaded."
   (setq doom-gruvbox-light-variant "hard")
 
 
+  ;; kriyative/git-code-review config
+  ;; (add-hook 'clojure-mode-hook 'gcr-mode)
+  ;; (add-hook 'emacs-lisp-mode-hook 'gcr-mode)
+  ;; (add-hook 'common-lisp-mode-hook 'gcr-mode)
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; User key bindings
   ;;
@@ -858,7 +863,7 @@ before packages are loaded."
   ;; Define a kanban style set of stages for todo tasks
   (with-eval-after-load 'org
     (setq org-todo-keywords
-         '((sequence "TODO" "DOING" "BLOCKED" "REVIEW" "|" "DONE" "ARCHIVED"))))
+          '((sequence "TODO" "DOING" "BLOCKED" "REVIEW" "|" "DONE" "ARCHIVED"))))
   ;;
   ;; The default keywords all use the same colour.
   ;; Make the states easier to distinguish by using different colours
@@ -934,13 +939,27 @@ before packages are loaded."
   (setq cider-pprint-fn 'fipp)
   ;;
   ;; Indent on save
-  (add-hook 'clojure-mode-hook
-            (lambda()
-              (add-hook 'before-save-hook '(lambda () (clojure-indent-region (point-min) (point-max))))))
+  ;; (defun my--clojure-mode-hook ()
+  ;;   (make-local-variable 'before-save-hook)
+  ;;   (add-hook 'before-save-hook
+  ;;             '(lambda ()
+  ;;                (clojure-indent-region (point-min) (point-max)))))
+  ;; (add-hook 'clojure-mode-hook #'my--clojure-mode-hook)
+
+  ;; From Zane Shelby in #spacemacs
+  ;; https://emacsredux.com/blog/2020/06/14/checking-the-major-mode-in-emacs-lisp/
+  (add-hook 'before-save-hook
+            '(lambda ()
+               (when (derived-mode-p 'clojure-mode)
+                 (clojure-indent-region (point-min) (point-max)))))
+
+  ;; (add-hook 'clojure-mode-hook
+  ;;           (lambda()
+  ;;             (add-hook 'before-save-hook '(lambda () (clojure-indent-region (point-min) (point-max))))))
   ;;
   ;; Indentation of function forms
   ;; https://github.com/clojure-emacs/clojure-mode#indentation-of-function-forms
-  (setq clojure-indent-style 'align-arguments)
+  ;; (setq clojure-indent-style 'align-arguments)
   ;;
   ;; Vertically align s-expressions
   ;; https://github.com/clojure-emacs/clojure-mode#vertical-alignment
@@ -1284,12 +1303,12 @@ before packages are loaded."
   ;;  (("b" "Buffers"
   ;;    ("C-d" spacemacs/kill-matching-buffers-rudely "Rudely"))))
 
-;; (spacemacs|spacebind
-;;  "Compare buffers, files and directories."
-;;  :global
-;;  (("TAB" spacemacs/alternate-buffer "Last buffer")
-;;   ("b" "Buffers"
-;;    ("C-e" spacemacs/kill-matching-buffers-rudely "Kill rudely..."))))
+  ;; (spacemacs|spacebind
+  ;;  "Compare buffers, files and directories."
+  ;;  :global
+  ;;  (("TAB" spacemacs/alternate-buffer "Last buffer")
+  ;;   ("b" "Buffers"
+  ;;    ("C-e" spacemacs/kill-matching-buffers-rudely "Kill rudely..."))))
 
 
   ;; (spacemacs|spacebind
@@ -1402,7 +1421,7 @@ before packages are loaded."
   ;; (add-hook 'cider-repl-mode-hook #'subword-mode)
   ;;
   ;;
- ;;
+  ;;
   ;;
   ;;
   ;; Linting with clj-kondo
@@ -1599,4 +1618,4 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-)
+  )
