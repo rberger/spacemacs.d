@@ -60,7 +60,7 @@ This function should only modify configuration layer settings."
      (clojure :variables
               clojure-toplevel-inside-comment-form t
               cider-overlays-use-font-lock t
-              clojure-enable-linters 'clj-kondo
+              clojure-enable-linters '(clj-kondo joker)
               cider-preferred-build-tool 'clojure-cli)
 
      ;; SPC a L displays key and command history in a separate buffer
@@ -374,20 +374,21 @@ It should only modify the values of Spacemacs settings."
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
-   dotspacemacs-new-empty-buffer-major-mode 'org-mode
+   dotspacemacs-new-empty-buffer-major-mode 'text-mode
 
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'org-mode
+   dotspacemacs-scratch-mode 'text-mode
 
    ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
    ;; (default nil)
-   dotspacemacs-initial-scratch-message "Scratch Buffer in Org-mode"
+   dotspacemacs-initial-scratch-message nil
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
 
    dotspacemacs-themes '(doom-gruvbox-light
+                         doom-gruvbox
                          doom-solarized-light
                          doom-sourcerer
                          kaolin-valley-dark
@@ -801,11 +802,11 @@ before packages are loaded."
   ;;
   ;; GitHub user and organization accounts owned
   ;; used by @ c f  to create a fork
-  (setq forge-owned-accounts
-        '(("practicalli" "jr0cket"
-           "ClojureBridgeLondon" "ldnclj"
-           "clojure-hacks"
-           "reclojure")))
+  ;; (setq forge-owned-accounts
+  ;;       '(("practicalli" "jr0cket"
+  ;;          "ClojureBridgeLondon" "ldnclj"
+  ;;          "clojure-hacks"
+  ;;          "reclojure")))
   ;; To blacklist specific accounts,
   ;; over-riding forge-owned-accounts
   ;; (setq forge-owned-blacklist
