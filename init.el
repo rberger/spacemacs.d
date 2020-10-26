@@ -967,11 +967,11 @@ before packages are loaded."
   ;;
   ;; Vertically align s-expressions
   ;; https://github.com/clojure-emacs/clojure-mode#vertical-alignment
-  (setq clojure-align-forms-automatically t)
+  ;; (setq clojure-align-forms-automatically t)
   ;;
   ;; Auto-indent code automatically
   ;; https://emacsredux.com/blog/2016/02/07/auto-indent-your-code-with-aggressive-indent-mode/
-  (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  ;; (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
   ;;
   ;;
   ;; Local Clojure and Java sources
